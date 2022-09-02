@@ -17,3 +17,11 @@ export const formatStatus = (status) => {
       return "Refused"
   }
 }
+
+
+
+////////////////////// pour le tri les dates avec function antiChrono
+
+export const antiChrono = (bill1, bill2) => {
+  return bill1.date < bill2.date ? 1 : -1;  
+};

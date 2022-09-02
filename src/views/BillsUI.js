@@ -2,6 +2,10 @@ import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
 
+//function antiChrono
+import { antiChrono } from "../app/format.js"
+
+
 import Actions from './Actions.js'
 
 const row = (bill) => {
@@ -19,9 +23,26 @@ const row = (bill) => {
     `)
   }
 
-const rows = (data) => {
+
+
+/*const rows = (data) => {
   return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+*/
+
+
+
+const rows = (data) => {
+  //je dois integrer la fct de test pour appliquer le tri avant l'affichage des lignes
+  if(data && data.length){    
+    const datesSorted = data.sort(antiChrono);
+    return datesSorted.map(bill => row(bill)).join("");
+
+  }
+
+  return ""; 
 }
+
+
 
 export default ({ data: bills, loading, error }) => {
   
