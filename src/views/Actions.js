@@ -8,5 +8,6 @@ export default (billUrl) => {
       ${eyeBlueIcon}
       </div>
     </div>`
+    
   )
 }

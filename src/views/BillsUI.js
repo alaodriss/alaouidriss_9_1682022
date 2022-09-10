@@ -32,16 +32,12 @@ const row = (bill) => {
 
 
 const rows = (data) => {
-  //je dois integrer la fct de test pour appliquer le tri avant l'affichage des lignes
-  if(data && data.length){    
-    const datesSorted = data.sort(antiChrono);
-    return datesSorted.map(bill => row(bill)).join("");
-
-  }
-
-  return ""; 
+  const antichrono = (a, b) => ((a.date < b.date) ? 1 : -1) 
+  return (data && data.length) ? 
+  data
+  .sort(antichrono)
+  .map(bill => row(bill)).join("") : ""
 }
-
 
 
 export default ({ data: bills, loading, error }) => {
@@ -75,7 +71,7 @@ export default ({ data: bills, loading, error }) => {
       <div class='content'>
         <div class='content-header'>
           <div class='content-title'> Mes notes de frais </div>
-          <button type="button" data-testid='btn-new-bill' class="btn btn-primary">Nouvelle note de frais</button>
+          <button type="button"  id="btn-new-bill" data-testid='btn-new-bill' class="btn btn-primary">Nouvelle note de frais</button>
         </div>
         <div id="data-table">
         <table id="example" class="table table-striped" style="width:100%">

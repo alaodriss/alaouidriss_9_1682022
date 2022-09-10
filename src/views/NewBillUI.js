@@ -54,9 +54,9 @@ export default () => {
                     <textarea class="form-control blue-border" data-testid="commentary" rows="3"></textarea>
                   </div>
                   <div class="col-half">
-                    <label for="file" class="bold-label">Justificatif</label>
+                    <label for="file"  class="bold-label">Justificatif</label>
                     <input required type="file" class="form-control blue-border" data-testid="file" />
-                    <div class='error-message'></div>
+                    <div  data-testid="errorMessag"></div>
                   </div>
                 </div>
             </div>
