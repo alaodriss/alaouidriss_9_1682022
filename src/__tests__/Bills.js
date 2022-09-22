@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
- import {screen, waitFor , fireEvent, } from "@testing-library/dom"
+ import {screen, waitFor , fireEvent,  } from "@testing-library/dom"
  import BillsUI from "../views/BillsUI.js"
  import Bills from "../containers/Bills.js"
  import { bills } from "../fixtures/bills.js"
@@ -38,11 +38,32 @@
        expect(windowIcon.classList.contains('active-icon')).toBe(true);
  
      })
+
+     test("Then message icon in vertical layout should be not highlighted", async () => {
+
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee'
+      }))
+      const root = document.createElement("div")
+      root.setAttribute("id", "root")
+      document.body.append(root)
+      router()
+      window.onNavigate(ROUTES_PATH.Bills)
+      await waitFor(() => screen.getByTestId('icon-mail'))
+      const windowIcon = screen.getByTestId('icon-mail')
+      expect(windowIcon.classList.contains('active-icon')).not.toBe(true)
+    })
+    
      test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills })
       const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
+
       const antiChrono = (a, b) => ((a < b) ? 1 : -1)
+    
       const datesSorted = [...dates].sort(antiChrono)
+
+
       expect(dates).toEqual(datesSorted)
        
      })
@@ -82,6 +103,46 @@
  })   
  
 
+ // check handleClickIconEye methode
+
+/* describe('When Im on a bill & I click on the icon eye', () => {
+  test('Then A modal should open', () => {
+    // set localstorage to mockstorage & user to employee
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+    window.localStorage.setItem('user', JSON.stringify({type: 'Employee'}))
+    const onNavigate = (pathname) => {
+      document.body.innerHTML = ROUTES({ pathname })
+    }
+    // place UI in DOM
+    const html = BillsUI({ data: bills })
+    document.body.innerHTML = html
+
+   // declare firestore
+    const mockedBills = null
+    // define bills
+    const billItem = new Bills({
+      document, onNavigate, mockedBills, localStorage: window.localStorage
+    })
+    // mock bootstrap modal function (see P9 sources folder)
+    $.fn.modal = jest.fn()
+    // mock methode handleClickIconEye 
+    const handleClickIconEye = jest.fn(billItem.handleClickIconEye)
+    // find eye icon buttons in DOM
+    const iconEye = screen.getAllByTestId('icon-eye')
+    // add event listeners to eye icons
+    iconEye.forEach((icon) => { 
+      icon.addEventListener('click', (e) => handleClickIconEye(icon))
+    // mimic user interaction
+    fireEvent.click(icon)
+    })
+    // check methode is called
+    expect(handleClickIconEye).toHaveBeenCalled()
+    // check Modal opened by searching for its ID
+    const modale = document.getElementById('modaleFile')
+    expect(modale).toBeTruthy()
+  })
+})
+*/
  
  /********************* */
 
@@ -135,6 +196,23 @@
 
   
 })
+    // next two tests basically the same as on dashboard tests
+    // replace DashboardUI for BillsUI
+
+    describe('When I am on Bills page but it is loading', () => {
+      test('Then, Loading page should be rendered', () => {
+        const html = BillsUI({ loading: true })
+        document.body.innerHTML = html
+        expect(screen.getAllByText('Loading...')).toBeTruthy()
+      })
+    })
+    describe('When I am on Bills page but back-end send an error message', () => {
+      test('Then, Error page should be rendered', () => {
+        const html = BillsUI({ error: 'some error message' })
+        document.body.innerHTML = html
+        expect(screen.getAllByText('Erreur')).toBeTruthy()
+      })
+    })
 
   
  /********************* */

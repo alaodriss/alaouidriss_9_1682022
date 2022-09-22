@@ -50,7 +50,7 @@
       
      })
    })
- 
+ /******************/
    //test d'intégration Post (function handleSubmit)
    describe("When I'm on NewBill page and click on submit btn", () => {
      test("Then the function handleSubmit should be called", () => {
@@ -81,4 +81,7 @@
        expect(handleSubmit).toHaveBeenCalled()
      })
    })
+
  })
+
+ 
